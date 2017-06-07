@@ -24,6 +24,28 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Wedding", "Wedding\", "{B25
 		SlnRelativePath = "Wedding\"
 	EndProjectSection
 EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Wedding2", "Wedding2\", "{AC9CBA4E-6F07-4C40-9FB7-72B085B101CC}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5.2"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_55373"
+		Debug.AspNetCompiler.PhysicalPath = "Wedding2\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_55373\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_55373"
+		Release.AspNetCompiler.PhysicalPath = "Wedding2\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_55373\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "55373"
+		SlnRelativePath = "Wedding2\"
+		DefaultWebSiteLanguage = "Visual C#"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +53,8 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{B258AB47-1C84-438F-9334-CD24A74D7C40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B258AB47-1C84-438F-9334-CD24A74D7C40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC9CBA4E-6F07-4C40-9FB7-72B085B101CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC9CBA4E-6F07-4C40-9FB7-72B085B101CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
