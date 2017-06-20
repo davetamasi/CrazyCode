@@ -10,6 +10,10 @@ $RECYCLE.BIN/
 
 # Ignore visual studio local & build files
 **/.vs/**
+**/packages/**
+**/bower_components/**
+**/obj/**
+**/Bin/**
 
 # Windows Installer files
 *.cab

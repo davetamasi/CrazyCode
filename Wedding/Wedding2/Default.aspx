@@ -1,5 +1,4 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Default.aspx.cs" Inherits="_Default" %>
-
 <!DOCTYPE html>
 <!--[if lt IE 7]>	  <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>		 <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -13,10 +12,6 @@
 	<title>Ellen & Dave &bull; 9.23.17</title>
 	<meta name="description" content="Ellen & Dave &bull; 9.23.17">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0" />
-
-	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 	<!-- For iPhone 4 with high-resolution Retina display: -->
 	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="apple-touch-icon-114x114-precomposed.png">
@@ -309,62 +304,58 @@
 									Please enter your name as it appears on the invitation:<br />
 									<asp:TextBox runat="server" ID="TextBoxPartyName" CssClass="form-control" Width="300px" />
 									<br />
+									Please enter your ZIP/postal code as it appears on the invitation:<br />
 									<asp:TextBox runat="server" ID="TextBoxZipCode" CssClass="form-control" MaxLength="5" Width="100px" />
 									<br />
 									<asp:Button runat="server" ID="ButtonLookup" CssClass="btn btn-primary btn-lg" Text="Lookup" OnClick="ButtonLookup_Click" />
 								</div>
 
 								<div runat="server" id="DivRsvpDetails" visible="false" class="column full">
-									Hello <%= guest?.GuestName %>!
+									Hello <%= guest?.GuestName %>!<br /><br />
 
-									<br />
-									<br />
-
-						<div class="column left">
-							<h2>Attendance</h2>
-							How many are able to attend?<br /><br />
-									<div class="btn-group" data-toggle="buttons">
-									<asp:RadioButtonList ID="RadioCount" runat="server" 
-										RepeatDirection="Vertical" RepeatLayout="Table" CssClass="btn-group" />
+									<div class="column left">
+										<h2>Attendance</h2>
+										How many are able to attend?<br /><br />
+										<div class="btn-group" data-toggle="buttons">
+										<asp:RadioButtonList ID="RadioCount" runat="server" 
+											RepeatDirection="Vertical" RepeatLayout="Table" CssClass="btn-group" />
+										</div>
+									</div>
+									<div class="column right">
+										<h2>Accommodations</h2>
+										We will do the best we can to get everyone in a great place, blyagh<br /><br />
+										<div class="btn-group" data-toggle="buttons">
+										<asp:RadioButtonList ID="RadioAccommodations" runat="server" 
+											RepeatDirection="Vertical" RepeatLayout="Table" CssClass="btn-group">
+											<asp:ListItem Text="No" Value="0"></asp:ListItem>
+											<asp:ListItem Text="Yes - Any" Value="1"></asp:ListItem>
+											<asp:ListItem Text="Yes - Camping" Value="2"></asp:ListItem>
+											<asp:ListItem Text="Yes - Resort low end" Value="3"></asp:ListItem>
+											<asp:ListItem Text="Yes - Resort high end" Value="4"></asp:ListItem>
+										</asp:RadioButtonList>   
+										</div>
 									</div>
 
-						</div>
+									<div class="clearfix"></div>
 
+									<div class="column full">
+										<h2>Message us!</h2>
+										Let us know any special requests, allergies, concerns, etc., or just say hello!<br />
+										<asp:TextBox runat="server" ID="TextBoxNotes" TextMode="MultiLine" Width="640px" Height="120px" />
 
+										<br /><br />
 
-						<div class="column right">
-							<h2>Accommodations</h2>
-									We will do the best we can to get everyone in a great place, blyagh<br /><br />
-									<div class="btn-group" data-toggle="buttons">
-									<asp:RadioButtonList ID="RadioAccommodations" runat="server" 
-										RepeatDirection="Vertical" RepeatLayout="Table" CssClass="btn-group">
-										<asp:ListItem Text="No" Value="0"></asp:ListItem>
-										<asp:ListItem Text="Yes - Any" Value="1"></asp:ListItem>
-										<asp:ListItem Text="Yes - Camping" Value="2"></asp:ListItem>
-										<asp:ListItem Text="Yes - Resort low end" Value="3"></asp:ListItem>
-										<asp:ListItem Text="Yes - Resort high end" Value="4"></asp:ListItem>
-									</asp:RadioButtonList>   
+										<asp:Button runat="server" ID="ButtonSave"
+											CssClass="btn btn-primary btn-lg"
+											Text="Save"
+											OnClick="ButtonSave_Click" />
+										<br /><br />
+										<asp:Label runat="server" ID="LabelSavedMessage" />
 									</div>
-						</div>
-									<br /><br />
-
-									Special requests, allergies, concerns, etc:<br />
-									<asp:TextBox runat="server" ID="TextBoxNotes" TextMode="MultiLine" Width="640px" Height="120px" />
-
-									<br />
-									<br />
-
-									<asp:Button runat="server" ID="ButtonSave"
-										CssClass="btn btn-primary btn-lg"
-										Text="Save"
-										OnClick="ButtonSave_Click" />
-									<br /><br />
-									<asp:Label runat="server" ID="LabelSavedMessage" />
 								</div>
-
-									<div runat="server" id="DivWarning" class="alert alert-danger" visible="false">
-										<asp:Label runat="server" ID="LabelWarning" />
-									</div>
+								<div runat="server" id="DivWarning" class="alert alert-danger" visible="false">
+									<asp:Label runat="server" ID="LabelWarning" />
+								</div>
 							</ContentTemplate>
 						</asp:UpdatePanel>
 					</form>
@@ -378,6 +369,25 @@
 
 	</div>
 	<!-- #bg-container -->
+
+	<script src="js/main-1.6.js"></script>
+
+								   
+	<script>
+		//var _gaq = _gaq || [];
+		//_gaq.push(['_setAccount', 'UA-XXXXXXX-XX']);
+		//_gaq.push(['_trackPageview']);
+						 
+
+		(function ()
+		{
+			var ga = document.createElement('script');
+			ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0];
+			s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
 
 </body>
 </html>

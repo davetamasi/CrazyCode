@@ -135,6 +135,12 @@ namespace WeddingData
 		
 		private byte _MaxSize;
 		
+		private bool _Confirmed;
+		
+		private bool _InviteSent;
+		
+		private bool _AllowLodging;
+		
 		private System.Nullable<byte> @__Count;
 		
 		private System.Nullable<byte> @__NeedAccommodations;
@@ -155,6 +161,12 @@ namespace WeddingData
     partial void OnZipCodeChanged();
     partial void OnMaxSizeChanging(byte value);
     partial void OnMaxSizeChanged();
+    partial void OnConfirmedChanging(bool value);
+    partial void OnConfirmedChanged();
+    partial void OnInviteSentChanging(bool value);
+    partial void OnInviteSentChanged();
+    partial void OnAllowLodgingChanging(bool value);
+    partial void OnAllowLodgingChanged();
     partial void On_CountChanging(System.Nullable<byte> value);
     partial void On_CountChanged();
     partial void On_NeedAccommodationsChanging(System.Nullable<byte> value);
@@ -210,7 +222,7 @@ namespace WeddingData
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ZipCode", DbType="Char(5)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ZipCode", DbType="VarChar(16)")]
 		public string ZipCode
 		{
 			get
@@ -246,6 +258,66 @@ namespace WeddingData
 					this._MaxSize = value;
 					this.SendPropertyChanged("MaxSize");
 					this.OnMaxSizeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Confirmed", DbType="Bit NOT NULL")]
+		public bool Confirmed
+		{
+			get
+			{
+				return this._Confirmed;
+			}
+			set
+			{
+				if ((this._Confirmed != value))
+				{
+					this.OnConfirmedChanging(value);
+					this.SendPropertyChanging();
+					this._Confirmed = value;
+					this.SendPropertyChanged("Confirmed");
+					this.OnConfirmedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_InviteSent", DbType="Bit NOT NULL")]
+		public bool InviteSent
+		{
+			get
+			{
+				return this._InviteSent;
+			}
+			set
+			{
+				if ((this._InviteSent != value))
+				{
+					this.OnInviteSentChanging(value);
+					this.SendPropertyChanging();
+					this._InviteSent = value;
+					this.SendPropertyChanged("InviteSent");
+					this.OnInviteSentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AllowLodging", DbType="Bit NOT NULL")]
+		public bool AllowLodging
+		{
+			get
+			{
+				return this._AllowLodging;
+			}
+			set
+			{
+				if ((this._AllowLodging != value))
+				{
+					this.OnAllowLodgingChanging(value);
+					this.SendPropertyChanging();
+					this._AllowLodging = value;
+					this.SendPropertyChanged("AllowLodging");
+					this.OnAllowLodgingChanged();
 				}
 			}
 		}
