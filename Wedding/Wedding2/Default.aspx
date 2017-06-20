@@ -21,9 +21,9 @@
 	<link rel="apple-touch-icon-precomposed" href="apple-touch-icon-precomposed.png">
 
 	<link rel="shortcut icon" href="favicon.ico?v=1">
-	<link rel="stylesheet" href="css/normalize.min.css">
+	<link rel="stylesheet" href="content/bootstrap.min.css">
 	<link rel="stylesheet" href="css/main-1.6.css">
-	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+<%--	<link rel="stylesheet" href="css/normalize.min.css">--%>
 
 	<script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
 </head>
@@ -261,16 +261,6 @@
 							<br />
 							Make sure to ensure the location is Guemes Island before reserving, and note
 							that there's usually a minimum stay.
-							<!--
-								Please consider these other options and reach out to them directly. We've looked around on Airbnb and VRBO, but feel free to do your own research. Some of these may already be reserved. The island is very small, so all locations are convenient! **Be aware that most options require at least a two-night minimum- which is perfect! We'll be on the island Thursday-Sunday.
-								$85 a night - Studio room - Guemes Island Farm
-								$89 a night (2 night min)- Studio- Tiny House
-								$150 a night (2 night min)- 2 bedroom - Modern Home
-								$350 a night (2 night min)- 4 bedroom- Guemes House Getaway
-								$350 a night (3 night min)- 3 bedroom - Guemes Island Beachfront Home
-								$350 a night (5 night min)- 3 bedroom- Beach House
-								$700 a night (3 night min)- 3 bedroom - Carroll Cliffhouse
-								-->
 						</p>
 					</div>
 					<!--end column left-->
@@ -300,12 +290,13 @@
 						<asp:ScriptManager EnablePartialRendering="true" ID="ScriptManager1" runat="server"></asp:ScriptManager>
 						<asp:UpdatePanel ID="UpdatePanel1" runat="server">
 							<ContentTemplate>
-								<div runat="server" id="DivRsvpFindGuest" class="column full">
-									Please enter your name as it appears on the invitation:<br />
-									<asp:TextBox runat="server" ID="TextBoxPartyName" CssClass="form-control" Width="300px" />
-									<br />
-									Please enter your ZIP/postal code as it appears on the invitation:<br />
-									<asp:TextBox runat="server" ID="TextBoxZipCode" CssClass="form-control" MaxLength="5" Width="100px" />
+								<div runat="server" id="DivRsvpFindGuest" class="column left">
+									<h2>And who are you?</h2>
+									Please enter the following as they appear on your invitation envelope:<br /><br />
+									<table>
+										<tr><td style="padding:5px">Name:&nbsp;</td><td style="padding:5px"><asp:TextBox runat="server" ID="TextBoxPartyName" CssClass="form-control" Width="300px" /></td></tr>
+										<tr><td style="padding:5px">ZIP/postal code:&nbsp;&nbsp;&nbsp;</td><td style="padding:5px"><asp:TextBox runat="server" ID="TextBoxZipCode" CssClass="form-control" MaxLength="8" Width="100px" /></td></tr>
+									</table>
 									<br />
 									<asp:Button runat="server" ID="ButtonLookup" CssClass="btn btn-primary btn-lg" Text="Lookup" OnClick="ButtonLookup_Click" />
 								</div>
@@ -353,6 +344,7 @@
 										<asp:Label runat="server" ID="LabelSavedMessage" />
 									</div>
 								</div>
+
 								<div runat="server" id="DivWarning" class="alert alert-danger" visible="false">
 									<asp:Label runat="server" ID="LabelWarning" />
 								</div>
@@ -373,7 +365,7 @@
 	<script src="js/main-1.6.js"></script>
 
 								   
-	<script>
+<%--	<script>
 		//var _gaq = _gaq || [];
 		//_gaq.push(['_setAccount', 'UA-XXXXXXX-XX']);
 		//_gaq.push(['_trackPageview']);
@@ -387,7 +379,7 @@
 			var s = document.getElementsByTagName('script')[0];
 			s.parentNode.insertBefore(ga, s);
 		})();
-	</script>
+	</script>--%>
 
 </body>
 </html>
