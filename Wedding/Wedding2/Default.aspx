@@ -133,21 +133,17 @@
 						<p>
 							The resort is about two hours north of Seattle, here are
 							<a target="_blank" href="http://www.bing.com/mapspreview?osid=042ed6fe-c0a6-4655-8a15-9f77adb78027&cp=48.122936~-122.755281&lvl=9&v=2&sV=2&form=S00027">driving directions</a>.
-							<br />
-							<br />
-
-							Out-of-town guests, please fly in to the
-							<a target="_blank" href="http://www.portseattle.org/sea-tac/Pages/default.aspx">Seattle-Tacoma International Airport</a>.<br />
-							<br />
+							<br /><br />
 
 							There is very limited parking space at the resort, so please carpool!  We
 							also recommend purchasing supplies in Seattle or Anacortes, there's only a 
-							small store on the island.<br />
-							<br />
+							small store on the island.<br /><br />
 
-							And please note that the last
-							<a target="_blank" href="http://www.skagitcounty.net/Departments/PublicWorksFerry">ferry</a>
-							leaves the island at 11pm Friday and Saturday nights.
+							Important <a target="_blank" href="http://www.skagitcounty.net/Departments/PublicWorksFerry">ferry</a> warning:
+							the last ferry <i>to the island</i> on Thursday is 8:30PM and the last ferries
+							<i>leaving the island</i> on Friday and Saturday nights are at 11PM.  Please
+							plan accordingly!  (Specifically, if you're flying in, make sure you arrive at
+							SeaTac before 5PM, and probably earlier to be safe.)
 						</p>
 					</div>
 					<!--end column left-->
@@ -237,12 +233,13 @@
 							<br />
 							<br />
 							We want as many guests as possible to stay at the resort, so please help us by ensuring
-							the cabins are packed as tightly as possible.
+							the cabins are packed as tightly as possible.  Translation:  if you want your own space (and
+							are not part of a big group or family),	please consider getting an AirBnB or hotel room. :)
 							<br />
 							<br />
-							[Updated 2/20: we are finalizing the list of available lodging and setting up the payment system.
-							Around the 3/1, we'll contact out-of-town friends and family to assess interest, and post the
-							remaining cabins and yurts after that.]
+							Updated 6/20: as people RSVP, we'll start contacting those needing lodging with booking and
+							payment details.  Please let us know ASAP if you need lodging so we can accommodate as many
+							as possible!
 						</p>
 					</div>
 					<!-- end full column -->
@@ -256,11 +253,15 @@
 							<a target="_blank" href="https://www.airbnb.com/s/Guemes-Island--Skagit-County--WA--United-States?guests=2&adults=2&children=0&infants=0&place_id=ChIJmd9Gg4V3hVQREmh-RJw8fuE&checkin=09%2F21%2F2017&checkout=09%2F24%2F2017&ss_id=lyfsuxdq&source=bb&page=1&s_tag=ul7kHH3e&allow_override%5B%5D=">AirBnb</a>
 							and
 							<a target="_blank" href="https://www.vrbo.com/vacation-rentals/usa/washington/wa-northwest/san-juan-islands/guemes-island?sleeps=2-plus&from-date=2017-09-21&to-date=2017-09-24&adultsCount=2&childrenCount=0">VRBO</a>
-							-- please feel free to reach out to them directly.
-							<br />
-							<br />
-							Make sure to ensure the location is Guemes Island before reserving, and note
+							-- please feel free to reach out to them directly.  Note: make sure to ensure the location is Guemes Island before reserving, and note
 							that there's usually a minimum stay.
+							<br />
+							<br />
+							We also have access to a large field a few miles from the resort that's available
+							for camping, if you're looking for the most in-tents* experience possible.
+							<br />
+							<br />
+							*Ellen approved this pun
 						</p>
 					</div>
 					<!--end column left-->
@@ -299,10 +300,15 @@
 									</table>
 									<br />
 									<asp:Button runat="server" ID="ButtonLookup" CssClass="btn btn-primary btn-lg" Text="Lookup" OnClick="ButtonLookup_Click" />
+									<br /><br />
+									<div runat="server" id="DivWarning" class="alert alert-danger" visible="false">
+										<asp:Label runat="server" ID="LabelWarning" />
+									</div>
 								</div>
 
 								<div runat="server" id="DivRsvpDetails" visible="false" class="column full">
-									Hello <%= guest?.GuestName %>!<br /><br />
+									<h2>Hello <%= guest?.GuestName %>!</h2>
+									Note you can return to this page at any time, same way you got here in the first place.<br /><br />
 
 									<div class="column left">
 										<h2>Attendance</h2>
@@ -314,15 +320,16 @@
 									</div>
 									<div class="column right">
 										<h2>Accommodations</h2>
-										We will do the best we can to get everyone in a great place, blyagh<br /><br />
+										May we help you find a place to stay?  (We will do our best)<br /><br />
 										<div class="btn-group" data-toggle="buttons">
 										<asp:RadioButtonList ID="RadioAccommodations" runat="server" 
 											RepeatDirection="Vertical" RepeatLayout="Table" CssClass="btn-group">
-											<asp:ListItem Text="No" Value="0"></asp:ListItem>
-											<asp:ListItem Text="Yes - Any" Value="1"></asp:ListItem>
-											<asp:ListItem Text="Yes - Camping" Value="2"></asp:ListItem>
-											<asp:ListItem Text="Yes - Resort low end" Value="3"></asp:ListItem>
-											<asp:ListItem Text="Yes - Resort high end" Value="4"></asp:ListItem>
+											<asp:ListItem Text="No - Just coming Saturday for the wedding" Value="0"></asp:ListItem>
+											<asp:ListItem Text="No - Already have lodging" Value="1"></asp:ListItem>
+											<asp:ListItem Text="Yes - Whatever's available" Value="2"></asp:ListItem>
+											<asp:ListItem Text="Yes - Camping" Value="3"></asp:ListItem>
+											<asp:ListItem Text="Yes - Resort (modest)" Value="4"></asp:ListItem>
+											<asp:ListItem Text="Yes - Resort (fancy)" Value="5"></asp:ListItem>
 										</asp:RadioButtonList>   
 										</div>
 									</div>
@@ -330,9 +337,9 @@
 									<div class="clearfix"></div>
 
 									<div class="column full">
-										<h2>Message us!</h2>
+										<h2>Give us a shout!</h2>
 										Let us know any special requests, allergies, concerns, etc., or just say hello!<br />
-										<asp:TextBox runat="server" ID="TextBoxNotes" TextMode="MultiLine" Width="640px" Height="120px" />
+										<asp:TextBox runat="server" ID="TextBoxNotes" TextMode="MultiLine" Width="640px" Height="90px" />
 
 										<br /><br />
 
@@ -343,10 +350,6 @@
 										<br /><br />
 										<asp:Label runat="server" ID="LabelSavedMessage" />
 									</div>
-								</div>
-
-								<div runat="server" id="DivWarning" class="alert alert-danger" visible="false">
-									<asp:Label runat="server" ID="LabelWarning" />
 								</div>
 							</ContentTemplate>
 						</asp:UpdatePanel>

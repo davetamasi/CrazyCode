@@ -137,9 +137,11 @@ namespace WeddingData
 		
 		private bool _Confirmed;
 		
-		private bool _InviteSent;
+		private bool _OutOfTown;
 		
-		private bool _AllowLodging;
+		private System.Nullable<bool> _IsFamily;
+		
+		private System.Nullable<bool> _IsEllen;
 		
 		private System.Nullable<byte> @__Count;
 		
@@ -148,6 +150,12 @@ namespace WeddingData
 		private string @__Notes;
 		
 		private System.Nullable<System.DateTime> @__RsvpDate;
+		
+		private string _Lodging;
+		
+		private System.Nullable<short> _Payment;
+		
+		private System.Nullable<bool> _IsPaid;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -163,10 +171,12 @@ namespace WeddingData
     partial void OnMaxSizeChanged();
     partial void OnConfirmedChanging(bool value);
     partial void OnConfirmedChanged();
-    partial void OnInviteSentChanging(bool value);
-    partial void OnInviteSentChanged();
-    partial void OnAllowLodgingChanging(bool value);
-    partial void OnAllowLodgingChanged();
+    partial void OnOutOfTownChanging(bool value);
+    partial void OnOutOfTownChanged();
+    partial void OnIsFamilyChanging(System.Nullable<bool> value);
+    partial void OnIsFamilyChanged();
+    partial void OnIsEllenChanging(System.Nullable<bool> value);
+    partial void OnIsEllenChanged();
     partial void On_CountChanging(System.Nullable<byte> value);
     partial void On_CountChanged();
     partial void On_NeedAccommodationsChanging(System.Nullable<byte> value);
@@ -175,6 +185,12 @@ namespace WeddingData
     partial void On_NotesChanged();
     partial void On_RsvpDateChanging(System.Nullable<System.DateTime> value);
     partial void On_RsvpDateChanged();
+    partial void OnLodgingChanging(string value);
+    partial void OnLodgingChanged();
+    partial void OnPaymentChanging(System.Nullable<short> value);
+    partial void OnPaymentChanged();
+    partial void OnIsPaidChanging(System.Nullable<bool> value);
+    partial void OnIsPaidChanged();
     #endregion
 		
 		public Guest()
@@ -282,42 +298,62 @@ namespace WeddingData
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_InviteSent", DbType="Bit NOT NULL")]
-		public bool InviteSent
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OutOfTown", DbType="Bit NOT NULL")]
+		public bool OutOfTown
 		{
 			get
 			{
-				return this._InviteSent;
+				return this._OutOfTown;
 			}
 			set
 			{
-				if ((this._InviteSent != value))
+				if ((this._OutOfTown != value))
 				{
-					this.OnInviteSentChanging(value);
+					this.OnOutOfTownChanging(value);
 					this.SendPropertyChanging();
-					this._InviteSent = value;
-					this.SendPropertyChanged("InviteSent");
-					this.OnInviteSentChanged();
+					this._OutOfTown = value;
+					this.SendPropertyChanged("OutOfTown");
+					this.OnOutOfTownChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AllowLodging", DbType="Bit NOT NULL")]
-		public bool AllowLodging
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsFamily", DbType="Bit")]
+		public System.Nullable<bool> IsFamily
 		{
 			get
 			{
-				return this._AllowLodging;
+				return this._IsFamily;
 			}
 			set
 			{
-				if ((this._AllowLodging != value))
+				if ((this._IsFamily != value))
 				{
-					this.OnAllowLodgingChanging(value);
+					this.OnIsFamilyChanging(value);
 					this.SendPropertyChanging();
-					this._AllowLodging = value;
-					this.SendPropertyChanged("AllowLodging");
-					this.OnAllowLodgingChanged();
+					this._IsFamily = value;
+					this.SendPropertyChanged("IsFamily");
+					this.OnIsFamilyChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsEllen", DbType="Bit")]
+		public System.Nullable<bool> IsEllen
+		{
+			get
+			{
+				return this._IsEllen;
+			}
+			set
+			{
+				if ((this._IsEllen != value))
+				{
+					this.OnIsEllenChanging(value);
+					this.SendPropertyChanging();
+					this._IsEllen = value;
+					this.SendPropertyChanged("IsEllen");
+					this.OnIsEllenChanged();
 				}
 			}
 		}
@@ -398,6 +434,66 @@ namespace WeddingData
 					this.@__RsvpDate = value;
 					this.SendPropertyChanged("_RsvpDate");
 					this.On_RsvpDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Lodging", DbType="VarChar(32)")]
+		public string Lodging
+		{
+			get
+			{
+				return this._Lodging;
+			}
+			set
+			{
+				if ((this._Lodging != value))
+				{
+					this.OnLodgingChanging(value);
+					this.SendPropertyChanging();
+					this._Lodging = value;
+					this.SendPropertyChanged("Lodging");
+					this.OnLodgingChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Payment", DbType="SmallInt")]
+		public System.Nullable<short> Payment
+		{
+			get
+			{
+				return this._Payment;
+			}
+			set
+			{
+				if ((this._Payment != value))
+				{
+					this.OnPaymentChanging(value);
+					this.SendPropertyChanging();
+					this._Payment = value;
+					this.SendPropertyChanged("Payment");
+					this.OnPaymentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsPaid", DbType="Bit")]
+		public System.Nullable<bool> IsPaid
+		{
+			get
+			{
+				return this._IsPaid;
+			}
+			set
+			{
+				if ((this._IsPaid != value))
+				{
+					this.OnIsPaidChanging(value);
+					this.SendPropertyChanging();
+					this._IsPaid = value;
+					this.SendPropertyChanged("IsPaid");
+					this.OnIsPaidChanged();
 				}
 			}
 		}

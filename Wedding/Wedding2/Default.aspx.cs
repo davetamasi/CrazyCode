@@ -61,16 +61,21 @@ public partial class _Default : System.Web.UI.Page
 		{
 			Debug.Assert( db.DatabaseExists() );
 
+			String searchString = this.TextBoxPartyName.Text.Trim()
+										.Replace( " and ", " & ")
+										.Replace( " + ", " & ");
+
 			// Find person from db
 			var query = from b in db.Guest
-						where b.GuestName == this.TextBoxPartyName.Text
-						&& b.ZipCode == this.TextBoxZipCode.Text
+						where b.GuestName == searchString
+						&& b.ZipCode == this.TextBoxZipCode.Text.Trim()
 						select b;
 
 			guest = query.FirstOrDefault();
 
 			if( guest != null )
 			{
+				HydrateCountList();
 				this.DivRsvpFindGuest.Visible = false;
 				this.DivRsvpDetails.Visible = true;
 
@@ -79,7 +84,6 @@ public partial class _Default : System.Web.UI.Page
 				if( guest._RsvpDate.HasValue )
 				{
 					// Guest has already RSVP'd, this is an update
-					HydrateCountList();
 					this.RadioCount.SelectedIndex = guest._Count.Value;
 					this.RadioAccommodations.SelectedIndex = guest._NeedAccommodations.Value;
 					this.TextBoxNotes.Text = guest._Notes;
@@ -88,7 +92,9 @@ public partial class _Default : System.Web.UI.Page
 			else
 			{
 				this.DivWarning.Visible = true;
-				this.LabelWarning.Text = "I can't seem to find you!  Please try again or email Dave or Ellen.";
+				this.LabelWarning.Text = @"Hmmm, we can't seem to figure out who you are.  Please make sure
+										you're typing in your name and ZIP exactly as it appears on your envelope.
+										Please try again, or else shoot Dave or Ellen an email, sorry for the pain!";
 			}
 		}
 	}
@@ -112,7 +118,7 @@ public partial class _Default : System.Web.UI.Page
 			db.SubmitChanges();
 		}
 
-		this.LabelSavedMessage.Text = "Thank for you RSVP!";
+		this.LabelSavedMessage.Text = "Got it -- thanks for letting us know!";
 	}
 
 	private void HydrateCountList()
