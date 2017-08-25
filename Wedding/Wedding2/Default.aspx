@@ -294,8 +294,8 @@
 									<h2>And who are you?</h2>
 									Please enter the following as they appear on your invitation envelope:<br /><br />
 									<table>
-										<tr><td style="padding:5px">Name:&nbsp;</td><td style="padding:5px"><asp:TextBox runat="server" ID="TextBoxPartyName" CssClass="form-control" Width="300px" Text="Bob & Sally Tamasi" /></td></tr>
-										<tr><td style="padding:5px">ZIP/postal code:&nbsp;&nbsp;&nbsp;</td><td style="padding:5px"><asp:TextBox runat="server" ID="TextBoxZipCode" CssClass="form-control" MaxLength="8" Width="100px" Text="66209" /></td></tr>
+										<tr><td style="padding:5px">Name:&nbsp;</td><td style="padding:5px"><asp:TextBox runat="server" ID="TextBoxPartyName" CssClass="form-control" Width="300px" /></td></tr>
+										<tr><td style="padding:5px">ZIP/postal code:&nbsp;&nbsp;&nbsp;</td><td style="padding:5px"><asp:TextBox runat="server" ID="TextBoxZipCode" CssClass="form-control" MaxLength="8" Width="100px" /></td></tr>
 									</table>
 									<br />
 									<asp:Button runat="server" ID="ButtonLookup" CssClass="btn btn-primary btn-lg" Text="Lookup" OnClick="ButtonLookup_Click" />
