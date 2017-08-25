@@ -14,18 +14,35 @@ public partial class _Default : System.Web.UI.Page
 	protected Guest guest;
 	protected Guid guestID;
 
+	protected Boolean IsAttending
+	{
+		get
+		{
+			return guest != null && guest._Count.HasValue && guest._Count.Value > 0;
+		}
+	}
+
+	protected Boolean IsLodging
+	{
+		get
+		{
+			return this.guest != null && this.guest.Lodging != null;
+		}
+	}
+
 	protected void Page_Load( object sender, EventArgs e )
 	{
 		if( !Page.IsPostBack )
 		{
+			Session[ "GuestID" ] = null;
 		}
 		else
 		{
 			if( Session[ "GuestID" ] != null )
 			{
-				if( !Guid.TryParse(Session[ "GuestID" ].ToString(), out guestID ) )
+				if( !Guid.TryParse( Session[ "GuestID" ].ToString(), out guestID ) )
 				{
-					Debug.Fail("Invalid guid");
+					Debug.Fail( "Invalid guid" );
 				}
 				Debug.Assert( guestID != Guid.Empty );
 			}
@@ -49,11 +66,10 @@ public partial class _Default : System.Web.UI.Page
 			if( guest != null )
 			{
 				HydrateCountList();
+				// HydrateElements();
 			}
 		}
 	}
-
-
 
 	protected void ButtonLookup_Click( object sender, EventArgs e )
 	{
@@ -71,23 +87,32 @@ public partial class _Default : System.Web.UI.Page
 						&& b.ZipCode == this.TextBoxZipCode.Text.Trim()
 						select b;
 
-			guest = query.FirstOrDefault();
+			guest = query.SingleOrDefault();
 
 			if( guest != null )
 			{
-				HydrateCountList();
-				this.DivRsvpFindGuest.Visible = false;
-				this.DivRsvpDetails.Visible = true;
+				HydrateElements();
+					//HydrateCountList();
+				//this.DivRsvpFindGuest.Visible = false;
+				//this.DivRsvpDetails.Visible = true;
 
-				Session[ "GuestID" ] = guest.GuestID.ToString();
+				//Session[ "GuestID" ] = guest.GuestID.ToString();
 
-				if( guest._RsvpDate.HasValue )
-				{
-					// Guest has already RSVP'd, this is an update
-					this.RadioCount.SelectedIndex = guest._Count.Value;
-					this.RadioAccommodations.SelectedIndex = guest._NeedAccommodations.Value;
-					this.TextBoxNotes.Text = guest._Notes;
-				}
+				//if( guest._Count.HasValue )
+				//{
+				//	// Guest has already RSVP'd, this is an update
+				//	this.RadioCount.SelectedIndex = guest._Count.Value;
+				//	this.RadioAccommodations.SelectedValue = guest._NeedAccommodations?.ToString();
+				//	this.RadioArrival.SelectedValue = guest._ArrivalDay;
+				//	this.RadioTravel.SelectedValue = guest._Travel?.ToString();
+				//	this.TextBoxNotes.Text = guest._Notes;
+				//	this.HyperLinkLodging.Text = guest.Lodging;
+				//	this.HyperLinkLodging.NavigateUrl = guest.LodgingUri;
+				//	this.LabelCost.Text = guest.Cost.ToString();
+				//	this.LabelPaymentReceived.Text = ( guest.IsPaid.HasValue && guest.IsPaid.Value )
+				//									? "<span style=\"color:green;font-weight:bold;font-size:14pt;\">Yes!</span></br>Thank you! :)"
+				//									: "<span style=\"color:red;font-weight:bold;font-size:14pt;\">No</span></br>(Please PayPal to dave@tamasi.com<br/>so we can pay the resort)";
+				//}
 			}
 			else
 			{
@@ -111,15 +136,81 @@ public partial class _Default : System.Web.UI.Page
 						select b;
 
 			Guest guest1 = query.Single();
+
+			//if( !this.IsLodging )
+			//{
+			//	guest1._NeedAccommodations = Byte.Parse( this.RadioAccommodations.SelectedValue );
+			//}
 			guest1._Count = Byte.Parse( this.RadioCount.SelectedValue );
-			guest1._NeedAccommodations = Byte.Parse( this.RadioAccommodations.SelectedValue );
+			guest._Count = Byte.Parse( this.RadioCount.SelectedValue );
+			guest1._ArrivalDay = this.RadioArrival.SelectedValue;
+
+			if( !String.IsNullOrEmpty( this.RadioTravel.SelectedValue ) )
+			{
+				guest1._Travel = Byte.Parse( this.RadioTravel.SelectedValue );
+			}
 			guest1._Notes = this.TextBoxNotes.Text;
 			guest1._RsvpDate = DateTime.Now;
 			db.SubmitChanges();
 		}
 
+		if( this.IsAttending )
+		{
+			this.DivRsvpArrivalTravel.Visible = true;
+			this.DivAccommodations.Visible = true;
+		}
+		else
+		{
+			this.DivRsvpArrivalTravel.Visible = false;
+			this.DivAccommodations.Visible = false;
+		}
+
+
 		this.LabelSavedMessage.Text = "Got it -- thanks for letting us know!";
 	}
+
+	private void HydrateElements()
+	{
+
+		HydrateCountList();
+		this.DivRsvpFindGuest.Visible = false;
+		this.DivRsvpFoundGuest.Visible = true;
+		this.DivRsvpAttendance.Visible = true;
+		this.DivRsvpShoutSave.Visible = true;
+
+		Session[ "GuestID" ] = guest.GuestID.ToString();
+
+		if( guest._Count.HasValue )
+		{
+			// Guest has already RSVP'd, this is an update
+			this.RadioCount.SelectedIndex = guest._Count.Value;
+
+			if( this.IsAttending )
+			{
+				this.DivRsvpArrivalTravel.Visible = true;
+				this.DivAccommodations.Visible = true;
+
+				//this.RadioAccommodations.SelectedValue = guest._NeedAccommodations?.ToString();
+				this.RadioArrival.SelectedValue = guest._ArrivalDay;
+				this.RadioTravel.SelectedValue = guest._Travel?.ToString();
+				this.TextBoxNotes.Text = guest._Notes;
+				this.HyperLinkLodging.Text = guest.Lodging;
+				this.HyperLinkLodging.NavigateUrl = guest.LodgingUri;
+				this.LabelCost.Text = guest.Cost.ToString();
+				this.LabelPaymentReceived.Text = ( guest.IsPaid.HasValue && guest.IsPaid.Value )
+												? "<span style=\"color:green;font-weight:bold;font-size:14pt;\">Yes!</span></br>Thank you! :)"
+												: "<span style=\"color:red;font-weight:bold;font-size:14pt;\">No</span></br>(Please PayPal to dave@tamasi.com<br/>so we can pay the resort)";
+			}
+			else
+			{
+				this.DivRsvpArrivalTravel.Visible = false;
+				this.DivAccommodations.Visible = false;
+
+			}
+		}
+	}
+
+
 
 	private void HydrateCountList()
 	{
@@ -127,8 +218,10 @@ public partial class _Default : System.Web.UI.Page
 		{
 			for( Byte k = 0; k <= guest.MaxSize; k++ )
 			{
-				String text = k == 0 ? "0 (not attending)" : k.ToString();
-				ListItem li = new ListItem(text, k.ToString());
+				String text = k == 0
+					? "&nbsp;&nbsp;0 (not attending)"
+					: String.Format( "&nbsp;&nbsp;{0}", k );
+				ListItem li = new ListItem( text, k.ToString() );
 				this.RadioCount.Items.Add( li );
 			}
 		}

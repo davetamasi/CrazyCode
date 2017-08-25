@@ -28,9 +28,6 @@
 	<script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
 </head>
 <body>
-	<!--[if lt IE 7]>
-		<p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
-	<![endif]-->
 
 	<div id="bg-image">
 		<img src="img/bg-light.jpg" alt="bg" />
@@ -46,6 +43,7 @@
 						<li><a href="#venue">VENUE</a></li>
 						<li><a href="#accommodations">ACCOMMODATIONS</a></li>
 						<li><a href="#rsvp">RSVP</a></li>
+						<li><a href="#registry">REGISTRY</a></li>
 					</ul>
 				</nav>
 			</div>
@@ -291,12 +289,13 @@
 						<asp:ScriptManager EnablePartialRendering="true" ID="ScriptManager1" runat="server"></asp:ScriptManager>
 						<asp:UpdatePanel ID="UpdatePanel1" runat="server">
 							<ContentTemplate>
+
 								<div runat="server" id="DivRsvpFindGuest" class="column left">
 									<h2>And who are you?</h2>
 									Please enter the following as they appear on your invitation envelope:<br /><br />
 									<table>
-										<tr><td style="padding:5px">Name:&nbsp;</td><td style="padding:5px"><asp:TextBox runat="server" ID="TextBoxPartyName" CssClass="form-control" Width="300px" /></td></tr>
-										<tr><td style="padding:5px">ZIP/postal code:&nbsp;&nbsp;&nbsp;</td><td style="padding:5px"><asp:TextBox runat="server" ID="TextBoxZipCode" CssClass="form-control" MaxLength="8" Width="100px" /></td></tr>
+										<tr><td style="padding:5px">Name:&nbsp;</td><td style="padding:5px"><asp:TextBox runat="server" ID="TextBoxPartyName" CssClass="form-control" Width="300px" Text="Bob & Sally Tamasi" /></td></tr>
+										<tr><td style="padding:5px">ZIP/postal code:&nbsp;&nbsp;&nbsp;</td><td style="padding:5px"><asp:TextBox runat="server" ID="TextBoxZipCode" CssClass="form-control" MaxLength="8" Width="100px" Text="66209" /></td></tr>
 									</table>
 									<br />
 									<asp:Button runat="server" ID="ButtonLookup" CssClass="btn btn-primary btn-lg" Text="Lookup" OnClick="ButtonLookup_Click" />
@@ -306,54 +305,112 @@
 									</div>
 								</div>
 
-								<div runat="server" id="DivRsvpDetails" visible="false" class="column full">
+								<div runat="server" id="DivRsvpFoundGuest" visible="false" class="column full">
 									<h2>Hello <%= guest?.GuestName %>!</h2>
-									Note you can return to this page at any time, same way you got here in the first place.<br /><br />
-
-									<div class="column left">
-										<h2>Attendance</h2>
-										How many are able to attend?<br /><br />
-										<div class="btn-group" data-toggle="buttons">
-										<asp:RadioButtonList ID="RadioCount" runat="server" 
-											RepeatDirection="Vertical" RepeatLayout="Table" CssClass="btn-group" />
-										</div>
-									</div>
-									<div class="column right">
-										<h2>Accommodations</h2>
-										May we help you find a place to stay?  (We will do our best)<br /><br />
-										<div class="btn-group" data-toggle="buttons">
-										<asp:RadioButtonList ID="RadioAccommodations" runat="server" 
-											RepeatDirection="Vertical" RepeatLayout="Table" CssClass="btn-group">
-											<asp:ListItem Text="No - Just coming Saturday for the wedding" Value="0"></asp:ListItem>
-											<asp:ListItem Text="No - Already have lodging" Value="1"></asp:ListItem>
-											<asp:ListItem Text="Yes - Whatever's available" Value="2"></asp:ListItem>
-											<asp:ListItem Text="Yes - Camping" Value="3"></asp:ListItem>
-											<asp:ListItem Text="Yes - Resort (modest)" Value="4"></asp:ListItem>
-											<asp:ListItem Text="Yes - Resort (fancy)" Value="5"></asp:ListItem>
-										</asp:RadioButtonList>   
-										</div>
-									</div>
-
-									<div class="clearfix"></div>
-
-									<div class="column full">
-										<h2>Give us a shout!</h2>
-										Let us know any special requests, allergies, concerns, etc., or just say hello!<br />
-										<asp:TextBox runat="server" ID="TextBoxNotes" TextMode="MultiLine" Width="640px" Height="90px" />
-
-										<br /><br />
-
-										<asp:Button runat="server" ID="ButtonSave"
-											CssClass="btn btn-primary btn-lg"
-											Text="Save"
-											OnClick="ButtonSave_Click" />
-										<br /><br />
-										<asp:Label runat="server" ID="LabelSavedMessage" />
-									</div>
+									Note you can return to this page at any time, same way you got here in the first place.
+									<br />
+									<div class="hr-b"></div>
 								</div>
+					
+								<div class="column left">
+
+									<div runat="server" id="DivRsvpAttendance" visible="false">
+										<h2>Attendance</h2>
+										How many are able to attend?<br />
+										<div class="btn-group" data-toggle="buttons">
+											<asp:RadioButtonList ID="RadioCount" runat="server" 
+												RepeatDirection="Vertical" RepeatLayout="Table" CssClass="btn-group" />
+										</div>
+									</div>
+									
+									<div runat="server" id="DivRsvpArrivalTravel" visible="false">
+										<h2>Arrival</h2>
+										When are you planning to arrive?<br />
+										<div class="btn-group" data-toggle="buttons">
+											<asp:RadioButtonList ID="RadioArrival" runat="server" 
+											RepeatDirection="Vertical" RepeatLayout="Table" CssClass="btn-group">
+												<asp:ListItem Text="&nbsp;&nbsp;Thursday the 21st" Value="R"></asp:ListItem>
+												<asp:ListItem Text="&nbsp;&nbsp;Friday the 22nd" Value="F"></asp:ListItem>
+												<asp:ListItem Text="&nbsp;&nbsp;Saturday the 23rd" Value="S"></asp:ListItem>
+											</asp:RadioButtonList>
+										</div>
+										<h2>Getting There</h2>
+										Parking at the resort is very limited -- please<br />
+										carpool if you can.  We'll try to connect you based<br />
+										on the following, but please let folks know on our<br />
+										<a target="_blank" href="https://www.facebook.com/events/613006889086800">Message Board</a>.
+										<br /><br />
+										<div class="btn-group" data-toggle="buttons">
+											<asp:RadioButtonList ID="RadioTravel" runat="server" 
+												RepeatDirection="Vertical" RepeatLayout="Table" CssClass="btn-group">
+												<asp:ListItem Text="&nbsp;&nbsp;Driving - no extra room :(" Value="0"></asp:ListItem>
+												<asp:ListItem Text="&nbsp;&nbsp;Driving - happy to offer a ride!" Value="1"></asp:ListItem>
+												<asp:ListItem Text="&nbsp;&nbsp;Need a ride!" Value="2"></asp:ListItem>
+											</asp:RadioButtonList>
+										</div>
+									</div>
+
+								</div>
+
+								<div class="column right">
+
+									<div runat="server" id="DivAccommodations" visible="false">
+										<h2>Accommodations</h2>
+										Here's the skinny on your stay:<br /><br />
+										<table class="table table-bordered">
+											<tr>
+												<td style="padding:5px">Lodging:&nbsp;</td>
+												<td style="padding:5px"><asp:HyperLink runat="server" ID="HyperLinkLodging" Target="_blank" /></td>
+
+											</tr>
+											<tr>
+												<td style="padding:5px">Total cost (1-3 nights):&nbsp;&nbsp;&nbsp;</td>
+												<td style="padding:5px"><b>$<asp:Label runat="server" ID="LabelCost" /></b></td>
+											</tr>
+											<tr>
+												<td style="padding:5px">Payment received:&nbsp;&nbsp;</td>
+												<td style="padding:5px"><asp:Label runat="server" ID="LabelPaymentReceived" /></td>
+											</tr>
+										</table>
+
+										<b>Note:</b> Not all the spots at the resort are equal in privacy, amenities, noise level, etc.;
+										we did our best to place guests based on their individual needs, whether they're from out of town
+										or local folk, coming early or in the nick of time on Saturday, and so on.  Please forgive (or
+										praise) us if our selection isn't or is your ideal choice.
+										<br /><br />
+										That said, you're welcome to swap amongst yourselves!  Please post on our
+										<a target="_blank" href="https://www.facebook.com/events/613006889086800">Message Board</a>
+										if you have an AirBnB and would like to swap for resort lodging, or vice versa, or if you would
+										like to swap your resort lodging with someone else.
+									</div>
+
+								</div>
+
+								<div runat="server" id="DivRsvpShoutSave" visible="false" class="column full">
+									<h2>Give us a shout!</h2>
+									Let us know any special requests, allergies, concerns, etc., or just say hello!<br />
+									<asp:TextBox runat="server" ID="TextBoxNotes" TextMode="MultiLine" Width="640px" Height="90px" />
+									<br /><br />
+									<asp:Button runat="server" ID="ButtonSave"
+										CssClass="btn btn-primary btn-lg"
+										Text="Save"
+										OnClick="ButtonSave_Click" />
+									<br /><br />
+									<asp:Label runat="server" ID="LabelSavedMessage" />
+								</div>
+								
 							</ContentTemplate>
 						</asp:UpdatePanel>
 					</form>
+				</section>
+
+				<section id="registry" class="clearfix">
+					<h1>REGISTRY</h1>
+					<div class="column full">
+						<p>					We are registered at
+					<a target="_blank" href="https://www.amazon.com/wedding/ellen-french-dave-tamasi-guemes-island-september-2017/registry/159LV6DUA9TR3">Amazon</a>!
+						</p>
+					</div>
 				</section>
 
 				<div style="height: 300px"></div>

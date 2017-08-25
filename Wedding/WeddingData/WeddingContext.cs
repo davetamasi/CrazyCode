@@ -28,12 +28,12 @@ namespace WeddingData
 		
 		private static System.Data.Linq.Mapping.MappingSource mappingSource = new AttributeMappingSource();
 		
-    #region Extensibility Method Definitions
-    partial void OnCreated();
-    partial void InsertGuest(Guest instance);
-    partial void UpdateGuest(Guest instance);
-    partial void DeleteGuest(Guest instance);
-    #endregion
+	#region Extensibility Method Definitions
+	partial void OnCreated();
+	partial void InsertGuest(Guest instance);
+	partial void UpdateGuest(Guest instance);
+	partial void DeleteGuest(Guest instance);
+	#endregion
 		
 		public WeddingContext(string connection) : 
 				base(connection, mappingSource)
@@ -135,8 +135,6 @@ namespace WeddingData
 		
 		private byte _MaxSize;
 		
-		private bool _Confirmed;
-		
 		private bool _OutOfTown;
 		
 		private System.Nullable<bool> _IsFamily;
@@ -145,53 +143,71 @@ namespace WeddingData
 		
 		private System.Nullable<byte> @__Count;
 		
+		private System.Nullable<byte> @__KidCount;
+		
 		private System.Nullable<byte> @__NeedAccommodations;
 		
 		private string @__Notes;
 		
 		private System.Nullable<System.DateTime> @__RsvpDate;
 		
+		private string @__ArrivalDay;
+		
+		private System.Nullable<byte> @__Travel;
+		
 		private string _Lodging;
 		
-		private System.Nullable<short> _Payment;
+		private string _LodgingUri;
+		
+		private System.Nullable<short> _Cost;
+		
+		private bool _NoticeSent;
 		
 		private System.Nullable<bool> _IsPaid;
 		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnGuestIDChanging(System.Guid value);
-    partial void OnGuestIDChanged();
-    partial void OnGuestNameChanging(string value);
-    partial void OnGuestNameChanged();
-    partial void OnZipCodeChanging(string value);
-    partial void OnZipCodeChanged();
-    partial void OnMaxSizeChanging(byte value);
-    partial void OnMaxSizeChanged();
-    partial void OnConfirmedChanging(bool value);
-    partial void OnConfirmedChanged();
-    partial void OnOutOfTownChanging(bool value);
-    partial void OnOutOfTownChanged();
-    partial void OnIsFamilyChanging(System.Nullable<bool> value);
-    partial void OnIsFamilyChanged();
-    partial void OnIsEllenChanging(System.Nullable<bool> value);
-    partial void OnIsEllenChanged();
-    partial void On_CountChanging(System.Nullable<byte> value);
-    partial void On_CountChanged();
-    partial void On_NeedAccommodationsChanging(System.Nullable<byte> value);
-    partial void On_NeedAccommodationsChanged();
-    partial void On_NotesChanging(string value);
-    partial void On_NotesChanged();
-    partial void On_RsvpDateChanging(System.Nullable<System.DateTime> value);
-    partial void On_RsvpDateChanged();
-    partial void OnLodgingChanging(string value);
-    partial void OnLodgingChanged();
-    partial void OnPaymentChanging(System.Nullable<short> value);
-    partial void OnPaymentChanged();
-    partial void OnIsPaidChanging(System.Nullable<bool> value);
-    partial void OnIsPaidChanged();
-    #endregion
+	#region Extensibility Method Definitions
+	partial void OnLoaded();
+	partial void OnValidate(System.Data.Linq.ChangeAction action);
+	partial void OnCreated();
+	partial void OnGuestIDChanging(System.Guid value);
+	partial void OnGuestIDChanged();
+	partial void OnGuestNameChanging(string value);
+	partial void OnGuestNameChanged();
+	partial void OnZipCodeChanging(string value);
+	partial void OnZipCodeChanged();
+	partial void OnMaxSizeChanging(byte value);
+	partial void OnMaxSizeChanged();
+	partial void OnOutOfTownChanging(bool value);
+	partial void OnOutOfTownChanged();
+	partial void OnIsFamilyChanging(System.Nullable<bool> value);
+	partial void OnIsFamilyChanged();
+	partial void OnIsEllenChanging(System.Nullable<bool> value);
+	partial void OnIsEllenChanged();
+	partial void On_CountChanging(System.Nullable<byte> value);
+	partial void On_CountChanged();
+	partial void On_KidCountChanging(System.Nullable<byte> value);
+	partial void On_KidCountChanged();
+	partial void On_NeedAccommodationsChanging(System.Nullable<byte> value);
+	partial void On_NeedAccommodationsChanged();
+	partial void On_NotesChanging(string value);
+	partial void On_NotesChanged();
+	partial void On_RsvpDateChanging(System.Nullable<System.DateTime> value);
+	partial void On_RsvpDateChanged();
+	partial void On_ArrivalDayChanging(string value);
+	partial void On_ArrivalDayChanged();
+	partial void On_TravelChanging(System.Nullable<byte> value);
+	partial void On_TravelChanged();
+	partial void OnLodgingChanging(string value);
+	partial void OnLodgingChanged();
+	partial void OnLodgingUriChanging(string value);
+	partial void OnLodgingUriChanged();
+	partial void OnCostChanging(System.Nullable<short> value);
+	partial void OnCostChanged();
+	partial void OnNoticeSentChanging(bool value);
+	partial void OnNoticeSentChanged();
+	partial void OnIsPaidChanging(System.Nullable<bool> value);
+	partial void OnIsPaidChanged();
+	#endregion
 		
 		public Guest()
 		{
@@ -278,26 +294,6 @@ namespace WeddingData
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Confirmed", DbType="Bit NOT NULL")]
-		public bool Confirmed
-		{
-			get
-			{
-				return this._Confirmed;
-			}
-			set
-			{
-				if ((this._Confirmed != value))
-				{
-					this.OnConfirmedChanging(value);
-					this.SendPropertyChanging();
-					this._Confirmed = value;
-					this.SendPropertyChanged("Confirmed");
-					this.OnConfirmedChanged();
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OutOfTown", DbType="Bit NOT NULL")]
 		public bool OutOfTown
 		{
@@ -378,6 +374,26 @@ namespace WeddingData
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="__KidCount", DbType="TinyInt")]
+		public System.Nullable<byte> _KidCount
+		{
+			get
+			{
+				return this.@__KidCount;
+			}
+			set
+			{
+				if ((this.@__KidCount != value))
+				{
+					this.On_KidCountChanging(value);
+					this.SendPropertyChanging();
+					this.@__KidCount = value;
+					this.SendPropertyChanged("_KidCount");
+					this.On_KidCountChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="__NeedAccommodations", DbType="TinyInt")]
 		public System.Nullable<byte> _NeedAccommodations
 		{
@@ -438,6 +454,46 @@ namespace WeddingData
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="__ArrivalDay", DbType="Char(1)")]
+		public string _ArrivalDay
+		{
+			get
+			{
+				return this.@__ArrivalDay;
+			}
+			set
+			{
+				if ((this.@__ArrivalDay != value))
+				{
+					this.On_ArrivalDayChanging(value);
+					this.SendPropertyChanging();
+					this.@__ArrivalDay = value;
+					this.SendPropertyChanged("_ArrivalDay");
+					this.On_ArrivalDayChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="__Travel", DbType="TinyInt")]
+		public System.Nullable<byte> _Travel
+		{
+			get
+			{
+				return this.@__Travel;
+			}
+			set
+			{
+				if ((this.@__Travel != value))
+				{
+					this.On_TravelChanging(value);
+					this.SendPropertyChanging();
+					this.@__Travel = value;
+					this.SendPropertyChanged("_Travel");
+					this.On_TravelChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Lodging", DbType="VarChar(32)")]
 		public string Lodging
 		{
@@ -458,22 +514,62 @@ namespace WeddingData
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Payment", DbType="SmallInt")]
-		public System.Nullable<short> Payment
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LodgingUri", DbType="VarChar(128)")]
+		public string LodgingUri
 		{
 			get
 			{
-				return this._Payment;
+				return this._LodgingUri;
 			}
 			set
 			{
-				if ((this._Payment != value))
+				if ((this._LodgingUri != value))
 				{
-					this.OnPaymentChanging(value);
+					this.OnLodgingUriChanging(value);
 					this.SendPropertyChanging();
-					this._Payment = value;
-					this.SendPropertyChanged("Payment");
-					this.OnPaymentChanged();
+					this._LodgingUri = value;
+					this.SendPropertyChanged("LodgingUri");
+					this.OnLodgingUriChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Cost", DbType="SmallInt")]
+		public System.Nullable<short> Cost
+		{
+			get
+			{
+				return this._Cost;
+			}
+			set
+			{
+				if ((this._Cost != value))
+				{
+					this.OnCostChanging(value);
+					this.SendPropertyChanging();
+					this._Cost = value;
+					this.SendPropertyChanged("Cost");
+					this.OnCostChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NoticeSent", DbType="Bit NOT NULL")]
+		public bool NoticeSent
+		{
+			get
+			{
+				return this._NoticeSent;
+			}
+			set
+			{
+				if ((this._NoticeSent != value))
+				{
+					this.OnNoticeSentChanging(value);
+					this.SendPropertyChanging();
+					this._NoticeSent = value;
+					this.SendPropertyChanged("NoticeSent");
+					this.OnNoticeSentChanged();
 				}
 			}
 		}
