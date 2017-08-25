@@ -22,12 +22,48 @@ public partial class _Default : System.Web.UI.Page
 		}
 	}
 
-	protected Boolean IsLodging
+	protected LodgingEnum Lodging
 	{
 		get
 		{
-			return this.guest != null && this.guest.Lodging != null;
+			LodgingEnum ret = LodgingEnum.Unknown;
+
+			if( this.guest != null && this.guest._NeedAccommodations.HasValue )
+			{
+				if( this.guest.Lodging != null )
+				{
+					ret = LodgingEnum.ResortAssigned;
+				}
+				else if( this.guest._NeedAccommodations.Value == 0 )
+				{
+					ret = LodgingEnum.None;
+				}
+				else if( this.guest._NeedAccommodations.Value == 1 )
+				{
+					ret = LodgingEnum.Offsite;
+				}
+				else if( this.guest._NeedAccommodations.Value == 3 )
+				{
+					ret = LodgingEnum.Camping;
+				}
+				else
+				{
+					ret = LodgingEnum.Resort;
+				}
+			}
+
+			return ret;
 		}
+	}
+
+	protected enum LodgingEnum
+	{
+		Unknown,
+		None,
+		Offsite,
+		Camping,
+		Resort,
+		ResortAssigned
 	}
 
 	protected void Page_Load( object sender, EventArgs e )
@@ -92,7 +128,7 @@ public partial class _Default : System.Web.UI.Page
 			if( guest != null )
 			{
 				HydrateElements();
-					//HydrateCountList();
+				//HydrateCountList();
 				//this.DivRsvpFindGuest.Visible = false;
 				//this.DivRsvpDetails.Visible = true;
 
@@ -157,21 +193,29 @@ public partial class _Default : System.Web.UI.Page
 		if( this.IsAttending )
 		{
 			this.DivRsvpArrivalTravel.Visible = true;
-			this.DivAccommodations.Visible = true;
+			if( this.Lodging == LodgingEnum.ResortAssigned )
+			{
+				this.DivAccommodationsResort.Visible = true;
+				this.DivAccommodationsOther.Visible = false;
+			}
+			else
+			{
+				this.DivAccommodationsResort.Visible = false;
+				this.DivAccommodationsOther.Visible = true;
+			}
 		}
 		else
 		{
 			this.DivRsvpArrivalTravel.Visible = false;
-			this.DivAccommodations.Visible = false;
+			this.DivAccommodationsResort.Visible = false;
+			this.DivAccommodationsOther.Visible = false;
 		}
-
 
 		this.LabelSavedMessage.Text = "Got it -- thanks for letting us know!";
 	}
 
 	private void HydrateElements()
 	{
-
 		HydrateCountList();
 		this.DivRsvpFindGuest.Visible = false;
 		this.DivRsvpFoundGuest.Visible = true;
@@ -188,29 +232,60 @@ public partial class _Default : System.Web.UI.Page
 			if( this.IsAttending )
 			{
 				this.DivRsvpArrivalTravel.Visible = true;
-				this.DivAccommodations.Visible = true;
-
 				//this.RadioAccommodations.SelectedValue = guest._NeedAccommodations?.ToString();
 				this.RadioArrival.SelectedValue = guest._ArrivalDay;
 				this.RadioTravel.SelectedValue = guest._Travel?.ToString();
 				this.TextBoxNotes.Text = guest._Notes;
-				this.HyperLinkLodging.Text = guest.Lodging;
-				this.HyperLinkLodging.NavigateUrl = guest.LodgingUri;
-				this.LabelCost.Text = guest.Cost.ToString();
-				this.LabelPaymentReceived.Text = ( guest.IsPaid.HasValue && guest.IsPaid.Value )
-												? "<span style=\"color:green;font-weight:bold;font-size:14pt;\">Yes!</span></br>Thank you! :)"
-												: "<span style=\"color:red;font-weight:bold;font-size:14pt;\">No</span></br>(Please PayPal to dave@tamasi.com<br/>so we can pay the resort)";
+
+				this.DivRsvpArrivalTravel.Visible = true;
+				if( this.Lodging == LodgingEnum.ResortAssigned )
+				{
+					this.DivAccommodationsResort.Visible = true;
+					this.DivAccommodationsOther.Visible = false;
+
+					this.HyperLinkLodging.Text = guest.Lodging;
+					this.HyperLinkLodging.NavigateUrl = guest.LodgingUri;
+					this.LabelCost.Text = guest.Cost.ToString();
+					this.LabelPaymentReceived.Text = ( guest.IsPaid.HasValue && guest.IsPaid.Value )
+													? "<span style=\"color:green;font-weight:bold;font-size:14pt;\">Yes!</span></br>Thank you! :)"
+													: "<span style=\"color:red;font-weight:bold;font-size:14pt;\">No</span></br>(Please PayPal to dave@tamasi.com<br/>so we can pay the resort)";
+				}
+				else
+				{
+					this.DivAccommodationsResort.Visible = false;
+					this.DivAccommodationsOther.Visible = true;
+					switch( this.Lodging )
+					{
+						case LodgingEnum.Unknown:
+							this.LabelAccommodationsOther.Text = "We've not heard what your plans are for lodging.  Please email Dave or Ellen to let them know what you're thinking and why it's taking you so long!";
+							break;
+
+						case LodgingEnum.None:
+							this.LabelAccommodationsOther.Text = "We've heard through the grapevine that you're just coming up for the ceremony on Saturday and not staying over.";
+							break;
+
+						case LodgingEnum.Offsite:
+							this.LabelAccommodationsOther.Text = "We've heard through the grapevine that you're staying offsite at an AirBnb or house for part or all of the weekend.";
+							break;
+
+						case LodgingEnum.Camping:
+							this.LabelAccommodationsOther.Text = "We've heard through the grapevine that you're planning to camp somewhere on the island (and we're working on figuring out exactly where that might be).";
+							break;
+
+						case LodgingEnum.Resort:
+							this.LabelAccommodationsOther.Text = "You've let us know you're interested in staying at the resort, and we're working right now to find you a place.  Please check back soon, or email Dave or Ellen with questions.";
+							break;
+					}
+				}
 			}
 			else
 			{
 				this.DivRsvpArrivalTravel.Visible = false;
-				this.DivAccommodations.Visible = false;
-
+				this.DivAccommodationsResort.Visible = false;
+				this.DivAccommodationsOther.Visible = false;
 			}
 		}
 	}
-
-
 
 	private void HydrateCountList()
 	{

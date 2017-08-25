@@ -354,9 +354,9 @@
 
 								<div class="column right">
 
-									<div runat="server" id="DivAccommodations" visible="false">
+									<div runat="server" id="DivAccommodationsResort" visible="false">
 										<h2>Accommodations</h2>
-										Here's the skinny on your stay:<br /><br />
+										Here's the skinny on your stay at the Resort:<br /><br />
 										<table class="table table-bordered">
 											<tr>
 												<td style="padding:5px">Lodging:&nbsp;</td>
@@ -381,6 +381,18 @@
 										That said, you're welcome to swap amongst yourselves!  Please post on our
 										<a target="_blank" href="https://www.facebook.com/events/613006889086800">Message Board</a>
 										if you have an AirBnB and would like to swap for resort lodging, or vice versa, or if you would
+										like to swap your resort lodging with someone else.
+									</div>
+									<div runat="server" id="DivAccommodationsOther" visible="false">
+										<h2>Accommodations</h2>
+										<asp:Label runat="server" ID="LabelAccommodationsOther" />
+										<br /><br />
+										If you're happy with that, then so are we!
+										<br /><br />
+										But if you're having second thoughts, you're welcome to try something different!
+										Please post on our <a target="_blank" href="https://www.facebook.com/events/613006889086800">Message Board</a>
+										if you have an AirBnB and would like to swap for resort lodging, or were planning to camp but
+										would like to share an AirBnB or know if someone has a resort spot they'd like to give away,if possible vice versa, or if you would
 										like to swap your resort lodging with someone else.
 									</div>
 
