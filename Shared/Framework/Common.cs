@@ -406,27 +406,6 @@ namespace Tamasi.Shared.Framework
 
 		#region String Helper Methods
 
-		public static Int16? ConvertStringWinBuildNumber( String buildNumberString )
-		{
-			Int16? ret = null;
-
-			if( !String.IsNullOrEmpty( buildNumberString ) )
-			{
-				if( buildNumberString.Contains( "." ) )
-				{
-					buildNumberString = buildNumberString.Split( new char[] { '.' } )[ 0 ];
-				}
-
-				Int16 test = -1;
-				if( Int16.TryParse( buildNumberString, out test ) )
-				{
-					ret = test;
-				}
-			}
-
-			return ret;
-		}
-
 		/// <summary>
 		/// Used to compare strings where you want null==String.Empty
 		/// </summary>
@@ -713,7 +692,7 @@ namespace Tamasi.Shared.Framework
 			String dlString,
 			String delimiter = "," )
 		{
-			ReadOnlyCollection<String> ret = null;
+			ReadOnlyCollection<String> ret = new ReadOnlyCollection<String>( new List<String>() );
 
 			if( !String.IsNullOrWhiteSpace( dlString ) && !String.IsNullOrWhiteSpace( delimiter ) )
 			{
@@ -2070,80 +2049,7 @@ namespace Tamasi.Shared.Framework
 			return derived;
 		}
 
-		/// <summary>
-		/// Compares property values of two instances of the same class
-		/// </summary>
-		/// <param name="diffs">The list of diffs</param>
-		/// <returns>TRUE if instances are identical, false otherwise</returns>
-		public static Boolean CompareObjectInstances<T>
-		(
-			T instance1,
-			T instance2,
-			out IList<PropDiff> diffs,
-			Boolean ignoreUnderscoreProps = true )
-		{
-			diffs = new List<PropDiff>();
-			Boolean areSame = true;
-			PropertyInfo[] props = typeof( T ).GetProperties();
 
-			foreach( PropertyInfo pi in props )
-			{
-				if( ignoreUnderscoreProps && pi.Name.StartsWith( "_" ) )
-				{
-					continue;
-				}
-
-				object instance1Val = pi.GetValue( instance1, null );
-				object instance2Val = pi.GetValue( instance2, null );
-
-				Boolean instance1IsNull = ( instance1Val == null );
-				Boolean instance2IsNull = ( instance2Val == null );
-
-				String instance1String = instance1IsNull ? "!NULL!" : instance1Val.ToString();
-				String instance2String = instance2IsNull ? "!NULL!" : instance2Val.ToString();
-
-				if( instance1String == String.Empty ) instance1String = "!EMPTY!";
-				if( instance2String == String.Empty ) instance2String = "!EMPTY!";
-
-				if( instance1String != instance2String )
-				{
-					areSame = false;
-					diffs.Add( new PropDiff
-					{
-						PropertyName = pi.Name,
-						Instance1Val = instance1String,
-						Instance2Val = instance2String
-					} );
-				}
-
-				return areSame;
-			}
-
-			return true;
-		}
-
-		public class PropDiff
-		{
-			public String PropertyName { get; set; }
-
-			public String Instance1Val { get; set; }
-
-			public String Instance2Val { get; set; }
-
-			public static void PrintDiffList( IList<PropDiff> list )
-			{
-				foreach( PropDiff pd in list )
-				{
-					Common.WriteLine
-					(
-						"Prop {0}: '{1}' '{2}'",
-						pd.PropertyName,
-						pd.Instance1Val,
-						pd.Instance2Val
-					);
-				}
-			}
-		}
 
 		#endregion Class and Object Methods
 
