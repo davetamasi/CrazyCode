@@ -13,9 +13,9 @@ namespace Tamasi.Shared.Framework.FileSystemUtilities
 	{
 		#region Fields and Constructors
 
-		protected readonly string hostName = null;
-		protected readonly string localPath = null;
-		protected readonly string remotePath = null;
+		protected readonly string hostName = "";
+		protected readonly string localPath = "";
+		protected readonly string remotePath = "";
 		protected readonly DriveLetter driveLetter = DriveLetter.D;
 		protected readonly Boolean isFile = false;
 

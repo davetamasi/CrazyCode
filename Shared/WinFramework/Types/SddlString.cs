@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
+using System.Security.Principal;
 
 using Tamasi.Shared.Framework;
 using Tamasi.Shared.Framework.FileSystemUtilities;
@@ -95,7 +97,7 @@ namespace Tamasi.Shared.WinFramework.Types
 				}
 				else
 				{
-					Common.WriteLine( message );
+					Framework.Common.WriteLine( message );
 				}
 			}
 
@@ -236,86 +238,100 @@ namespace Tamasi.Shared.WinFramework.Types
 			#endregion
 		}
 
-		private static string doParse( string subSDDL, string Seperator, string Seperator2 )
+		private static string doParse( string subSDDL, string seperator, string seperator2 )
 		{
-			string retval = "";
-			char type = subSDDL.ToCharArray()[ 0 ];
-			if( type == 'O' )
-			{
-				string owner=subSDDL.Substring( 2 );
-				if( Trustee.Keys.Contains( owner ) )
-				{
-					return "Owner: " + Trustee[ owner ] + Seperator;
-				}
-			}
-			else if( type == 'G' )
-			{
-				string group = subSDDL.Substring( 2 );
-				if( Trustee.Keys.Contains( group ) )
-				{
-					return "Group: " + Trustee[ group ] + Seperator;
-				}
-			}
-			else if( ( type == 'D' ) || ( type == 'S' ) )
-			{
-				if( type == 'D' )
-				{
-					retval += "DACL" + Seperator;
-				}
-				else
-				{
-					retval += "SACL" + Seperator;
-				}
-				string[] sections = subSDDL.Split( '(' );
+			Debug.Assert( !string.IsNullOrEmpty( subSDDL ) );
+			Debug.Assert( !string.IsNullOrEmpty( seperator ) );
+			Debug.Assert( !string.IsNullOrEmpty( seperator2 ) );
 
-				for( Int32 count = 1; count < sections.Length; count++ )
-				{
-					retval += "# " + count.ToString() + " of " + ( sections.Length - 1 ).ToString() + Seperator;
-					string[] parts = sections[ count ].TrimEnd( ')' ).Split( ';' );
-					retval += "";
-					if( ACE_Types.Keys.Contains( parts[ 0 ] ) )
+			StringBuilder sb = new StringBuilder();
+			char sddlType = subSDDL.ToCharArray()[ 0 ];
+
+			switch( sddlType )
+			{
+				case 'O':
+					string owner = subSDDL.Substring( 2 );
+					if( Trustee.Keys.Contains( owner ) )
 					{
-						retval += Seperator2 + "Type: " + ACE_Types[ parts[ 0 ] ] + Seperator;
+						sb.AppendFormat( "Owner: {0}{1}", Trustee[ owner ], seperator );
 					}
-					if( ACE_Flags.Keys.Contains( parts[ 1 ] ) )
+
+					break;
+				case 'G':
+					string group = subSDDL.Substring( 2 );
+					if( Trustee.Keys.Contains( group ) )
 					{
-						retval += Seperator2 + "Inheritance: " + ACE_Flags[ parts[ 1 ] ] + Seperator;
+						sb.AppendFormat( "Group: {0}{1}", Trustee[ group ], seperator );
 					}
-					for( Int32 count2 = 0; count2 < parts[ 2 ].Length; count2 += 2 )
+
+					break;
+				case 'D':
+				case 'S':
+
+					if( sddlType == 'D' )
 					{
-						string perm = parts[ 2 ].Substring( count2, 2 );
-						if( Permissions.Keys.Contains( perm ) )
-						{
-							if( count2 == 0 )
-							{
-								retval += Seperator2 + "Permissions: " + Permissions[ perm ];
-							}
-							else
-							{
-								retval += "|" + Permissions[ perm ];
-							}
-						}
-					}
-					retval += Seperator;
-					if( Trustee.Keys.Contains( parts[ 5 ] ) )
-					{
-						retval += Seperator2 + "Trustee: " + Trustee[ parts[ 5 ] ] + Seperator;
+						sb.AppendFormat( "DACL{0}", seperator );
 					}
 					else
 					{
-						try
+						sb.AppendFormat( "SACL{0}", seperator );
+					}
+
+					string[] sections = subSDDL.Split( '(' );
+
+					for( Int32 count = 1; count < sections.Length; count++ )
+					{
+						sb.AppendLine( "# " + count.ToString() + " of " + ( sections.Length - 1 ).ToString() + seperator );
+						string[] parts = sections[ count ].TrimEnd( ')' ).Split( ';' );
+						sb.AppendFormat( "" );
+						if( ACE_Types.Keys.Contains( parts[ 0 ] ) )
 						{
-							System.Security.Principal.SecurityIdentifier sid = new System.Security.Principal.SecurityIdentifier( parts[ 5 ] );
-							retval += Seperator2 + "Trustee: " + sid.Translate( typeof( System.Security.Principal.NTAccount ) ).ToString() + Seperator;
+							sb.AppendLine( seperator2 + "Type: " + ACE_Types[ parts[ 0 ] ] + seperator );
 						}
-						catch( Exception )
+						if( ACE_Flags.Keys.Contains( parts[ 1 ] ) )
 						{
-							retval += Seperator2 + "Trustee: " + parts[ 5 ] + Seperator;
+							sb.AppendLine( seperator2 + "Inheritance: " + ACE_Flags[ parts[ 1 ] ] + seperator );
+						}
+						for( Int32 count2 = 0; count2 < parts[ 2 ].Length; count2 += 2 )
+						{
+							string perm = parts[ 2 ].Substring( count2, 2 );
+							if( Permissions.Keys.Contains( perm ) )
+							{
+								if( count2 == 0 )
+								{
+									sb.AppendLine( seperator2 + "Permissions: " + Permissions[ perm ] );
+								}
+								else
+								{
+									sb.AppendLine( "|" + Permissions[ perm ] );
+								}
+							}
+						}
+						sb.Append( seperator );
+						if( Trustee.Keys.Contains( parts[ 5 ] ) )
+						{
+							sb.AppendLine( seperator2 + "Trustee: " + Trustee[ parts[ 5 ] ] + seperator );
+						}
+						else
+						{
+							try
+							{
+								SecurityIdentifier sid = new SecurityIdentifier( parts[ 5 ] );
+								sb.AppendLine( seperator2 + "Trustee: " + sid.Translate( typeof( System.Security.Principal.NTAccount ) ).ToString() + seperator );
+							}
+							catch( Exception )
+							{
+								sb.AppendLine( seperator2 + "Trustee: " + parts[ 5 ] + seperator );
+							}
 						}
 					}
-				}
+					break;
+				default:
+					throw new ArgumentException( "Invalid SDDL Type" );
+					break;
 			}
-			return retval;
+
+			return sb.ToString();
 		}
 
 		#endregion

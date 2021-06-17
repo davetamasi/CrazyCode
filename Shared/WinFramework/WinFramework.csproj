@@ -84,6 +84,7 @@
     <Compile Include="Types\CanonicalFilePath.cs" />
     <Compile Include="Types\Employee.cs" />
     <Compile Include="Types\FailureBucket.cs" />
+    <Compile Include="Common.cs" />
     <None Include="Types\SecurityDescriptorEx.cs" />
     <Compile Include="Types\SddlString.cs" />
   </ItemGroup>

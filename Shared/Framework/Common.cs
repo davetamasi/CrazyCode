@@ -687,12 +687,18 @@ namespace Tamasi.Shared.Framework
 			);
 		}
 
-		public static ReadOnlyCollection<String> StringListFromDelimitedString
+		/// <summary>
+		/// Returns a List of Strings from a CDL of strings
+		/// </summary>
+		/// <param name="dlString"></param>
+		/// <param name="delimiter"></param>
+		/// <returns></returns>
+		public static List<String> StringListFromDelimitedString
 		(
 			String dlString,
 			String delimiter = "," )
 		{
-			ReadOnlyCollection<String> ret = new ReadOnlyCollection<String>( new List<String>() );
+			List<String> ret = new List<String>();
 
 			if( !String.IsNullOrWhiteSpace( dlString ) && !String.IsNullOrWhiteSpace( delimiter ) )
 			{
@@ -702,13 +708,19 @@ namespace Tamasi.Shared.Framework
 					StringSplitOptions.RemoveEmptyEntries
 				);
 
-				ret = split.ToList().AsReadOnly();
+				ret = split.ToList();
 			}
 
 			return ret;
 		}
 
-		public static ReadOnlyCollection<Int32> IntListFromDelimitedString
+		/// <summary>
+		/// Returns a list of Integers from a CDL of ints
+		/// </summary>
+		/// <param name="commaDelimitedIntList"></param>
+		/// <param name="delimiter"></param>
+		/// <returns></returns>
+		public static List<Int32> IntListFromDelimitedString
 		(
 			String commaDelimitedIntList,
 			String delimiter = "," )
@@ -730,7 +742,7 @@ namespace Tamasi.Shared.Framework
 				}
 			}
 
-			return ints.AsReadOnly();
+			return ints;
 		}
 
 		/// <summary>

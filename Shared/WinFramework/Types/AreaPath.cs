@@ -139,7 +139,7 @@ namespace Tamasi.Shared.WinFramework.Types
 				}
 				else
 				{
-					Common.WriteLine( message );
+					Framework.Common.WriteLine( message );
 				}
 			}
 

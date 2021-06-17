@@ -66,11 +66,13 @@
     <Compile Include="CastObject.cs" />
     <Compile Include="Common.cs" />
     <Compile Include="CommonRegex.cs" />
+    <Compile Include="Comparers\InstanceComparer.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Enum.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="Extensions\FileStreamExtensions.cs" />
     <Compile Include="FileSystemUtilities\Constants.cs" />
+    <Compile Include="FileSystemUtilities\FilesCompare.cs" />
     <Compile Include="FileSystemUtilities\VirtualDirectoryPath.cs" />
     <Compile Include="FileSystemUtilities\VirtualPath.cs" />
     <Compile Include="Hash.cs" />

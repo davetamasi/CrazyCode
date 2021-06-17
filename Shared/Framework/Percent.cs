@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace Tamasi.Shared.Framework.Types
+namespace Tamasi.Shared.Framework
 {
 	public struct Percent
 	{

@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Data.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 using fr = Tamasi.Shared.Framework;
 
@@ -9,6 +12,51 @@ namespace Tamasi.Shared.Framework.FileSystemUtilities
 {
 	public class DirectoryCompare
 	{
+		#region Privates and Constructors
+
+		private readonly Lazy<List<DirectoryInfo>> sourceDirs;
+		private readonly Lazy<List<DirectoryInfo>> targetDirs;
+
+
+		public DirectoryCompare( DirectoryInfo sourceDir, DirectoryInfo targetDir )
+		{
+			this.sourceDirs = new Lazy<List<DirectoryInfo>>( () =>
+			{
+				return sourceDir.EnumerateDirectories( "*", SearchOption.AllDirectories ).ToList();
+			} );
+
+			this.targetDirs = new Lazy<List<DirectoryInfo>>( () =>
+			{
+				return targetDir.EnumerateDirectories( "*", SearchOption.AllDirectories ).ToList();
+			} );
+		}
+
+		#endregion
+
+		#region Properties
+
+		public IList<DirectoryInfo> OnlyInSource
+		{
+			get { return this.sourceDirs.Value.Except( this.targetDirs.Value ).ToList(); }
+		}
+
+		public IList<DirectoryInfo> InBoth
+		{
+			get { return this.sourceDirs.Value.Intersect( this.targetDirs.Value ).ToList(); }
+
+		}
+		public IList<DirectoryInfo> OnlyInTarget
+		{
+			get { return this.targetDirs.Value.Except( this.sourceDirs.Value ).ToList(); }
+
+		}
+
+
+		#endregion
+
+
+		#region Statics
+
 		public static Boolean AreSame( VirtualDirectoryPath vpath1, VirtualDirectoryPath vpath2, Boolean verbose )
 		{
 			DirectoryInfo directory1 = new DirectoryInfo( vpath1.Path );
@@ -117,5 +165,7 @@ namespace Tamasi.Shared.Framework.FileSystemUtilities
 
 			return areIdentical;
 		}
+
+		#endregion
 	}
 }
