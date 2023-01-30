@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using ThreadSafeRandomizer;
 
 namespace Tamasi.Shared.Framework
 {
@@ -15,7 +16,7 @@ namespace Tamasi.Shared.Framework
 		public static Int16 Int16( Int16 lowerBound = short.MinValue, Int16 upperBound = short.MaxValue )
 		{
 			Int16 range = ( Int16 )( upperBound - lowerBound );
-			Int16 offset = ( Int16 )( random.Next() % range );
+			Int16 offset = ( Int16 )( ThreadSafeRandom.Instance.Next() % range );
 			Int16 ret = ( Int16 )( lowerBound + offset );
 
 			Debug.Assert( ret >= lowerBound && ret <= upperBound );
@@ -29,7 +30,7 @@ namespace Tamasi.Shared.Framework
 		public static Int32 Int32( Int32 lowerBound = int.MinValue, Int32 upperBound = int.MaxValue )
 		{
 			Int32 range = ( upperBound - lowerBound );
-			Int32 offset = ( random.Next() % range );
+			Int32 offset = (ThreadSafeRandom.Instance.Next() % range );
 			Int32 ret = ( lowerBound + offset );
 
 			Debug.Assert( ret >= lowerBound && ret <= upperBound );
@@ -45,7 +46,7 @@ namespace Tamasi.Shared.Framework
 			}
 			else
 			{
-				return Convert.ToInt32( random.Next() ) % upperBound;
+				return Convert.ToInt32( ThreadSafeRandom.Instance.Next() ) % upperBound;
 			}
 		}
 
@@ -57,18 +58,18 @@ namespace Tamasi.Shared.Framework
 			}
 			else
 			{
-				return Convert.ToUInt64( random.Next() ) % upperBound;
+				return Convert.ToUInt64( ThreadSafeRandom.Instance.Next() ) % upperBound;
 			}
 		}
 
 		public static Int64 Int64()
 		{
-			return Convert.ToInt64( random.Next() );
+			return Convert.ToInt64( ThreadSafeRandom.Instance.Next() );
 		}
 
 		public static UInt64 UInt64()
 		{
-			return Convert.ToUInt64( random.Next() );
+			return Convert.ToUInt64( ThreadSafeRandom.Instance.Next() );
 		}
 
 		#endregion
@@ -99,14 +100,14 @@ namespace Tamasi.Shared.Framework
 
 		public static Boolean RandomBool()
 		{
-			return 1 == random.Next( 2 );
+			return 1 == ThreadSafeRandom.Instance.Next( 2 );
 		}
 
 		public static Boolean? NullableBool()
 		{
 			Boolean? ret = null;
 
-			switch( random.Next( 3 ) )
+			switch( ThreadSafeRandom.Instance.Next( 3 ) )
 			{
 				case 0:
 					break;
@@ -147,7 +148,7 @@ namespace Tamasi.Shared.Framework
 
 				for( Int32 i = 0; i < length * 2; i += 2 )
 				{
-					Int32 chr = random.Next( 0xD7FF );
+					Int32 chr = ThreadSafeRandom.Instance.Next( 0xD7FF );
 					str[ i + 1 ] = ( Byte )( ( chr & 0xFF00 ) >> 8 );
 					str[ i ] = ( Byte )( chr & 0xFF );
 				}
@@ -160,7 +161,7 @@ namespace Tamasi.Shared.Framework
 
 				for( Int32 k = 0; k < length; )
 				{
-					Int32 ascii = random.Next( 100 ) + 16;
+					Int32 ascii = ThreadSafeRandom.Instance.Next( 100 ) + 16;
 					if( ascii > 32 && ascii < 128 )
 					{
 						k++;
@@ -202,12 +203,10 @@ namespace Tamasi.Shared.Framework
 
 		#region Privates
 
-		private static Random random = new Random();
-
 		private static UInt32 GetUInt()
 		{
-			Int32 nonNegative = random.Next();
-			Boolean shift = random.Next( 2 ) == 0;
+			Int32 nonNegative = ThreadSafeRandom.Instance.Next();
+			Boolean shift = ThreadSafeRandom.Instance.Next( 2 ) == 0;
 			// This is now full range
 			Int32 value = shift ? nonNegative - int.MaxValue : nonNegative;
 

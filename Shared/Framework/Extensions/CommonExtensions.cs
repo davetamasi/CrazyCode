@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using ListShuffle;
 
 namespace Tamasi.Shared.Framework.Extensions
 {
@@ -23,16 +24,7 @@ namespace Tamasi.Shared.Framework.Extensions
 
 		public static void Shuffle<T>( this IList<T> list )
 		{
-			Random rng = new Random();
-			Int32 n = list.Count;
-			while( n > 1 )
-			{
-				n--;
-				Int32 k = rng.Next( n + 1 );
-				T value = list[ k ];
-				list[ k ] = list[ n ];
-				list[ n ] = value;
-			}
+			ListExtensions.Shuffle(list);
 		}
 
 		public static T To<T>( this object value )
